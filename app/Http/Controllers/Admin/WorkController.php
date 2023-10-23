@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use App\Models\Work;
-use Illuminate\Http\Request;
 
 class WorkController extends Controller
 {
@@ -14,7 +16,8 @@ class WorkController extends Controller
      */
     public function index()
     {
-        //
+        $works = Work::all();
+        return view('admin.works.index', compact('works'));
     }
 
     /**
@@ -46,7 +49,7 @@ class WorkController extends Controller
      */
     public function show(Work $work)
     {
-        //
+        return view('admin.works.show', compact('work'));
     }
 
     /**
