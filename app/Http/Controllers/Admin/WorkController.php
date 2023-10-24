@@ -27,7 +27,7 @@ class WorkController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.works.create');
     }
 
     /**
@@ -38,7 +38,11 @@ class WorkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $work = new Work;
+        $work->fill($data);
+        $work->save();
+        return redirect()->route('admin.works.show', $work);
     }
 
     /**
@@ -60,7 +64,7 @@ class WorkController extends Controller
      */
     public function edit(Work $work)
     {
-        //
+        return view('admin.works.edit', compact('work'));
     }
 
     /**
@@ -72,7 +76,9 @@ class WorkController extends Controller
      */
     public function update(Request $request, Work $work)
     {
-        //
+        $data = $request->all();
+        $work->update($data);
+        return redirect()->route('admin.works.show', $work);
     }
 
     /**
@@ -83,6 +89,7 @@ class WorkController extends Controller
      */
     public function destroy(Work $work)
     {
-        //
+        $work->delete();
+        return redirect()->route('admin.works.index');
     }
 }
