@@ -4,11 +4,40 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 use App\Models\Work;
 
 class WorkController extends Controller
 {
+
+    private function validation($data) {
+        $validator = Validator::make(
+          $data,
+          [
+            'title' => 'required|string|max:20',
+            'link' => "required|string",
+            "description" => "required|string",
+            "slug" => "nullable|string"
+          ],
+          [
+            'title.required' => 'Il titolo è obbligatorio',
+            'title.string' => 'Il titolo deve essere una stringa',
+            'title.max' => 'Il titolo deve massimo di 20 caratteri',
+            
+            'link.required' => 'Il link è obbligatorio',
+            'link.string' => 'Il link deve essere una stringa',
+
+            'description.required' => 'La descrizione è obbligatoria',
+            'description.string' => 'La descrizione deve essere una stringa',
+
+            'slug.string' => 'Lo slug deve essere una stringa'
+            
+          ]
+        )->validate();
+      
+        return $validator;
+      }
     /**
      * Display a listing of the resource.
      *
@@ -38,7 +67,7 @@ class WorkController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $this->validation($request->all());
         $work = new Work;
         $work->fill($data);
         $work->save();
@@ -76,7 +105,7 @@ class WorkController extends Controller
      */
     public function update(Request $request, Work $work)
     {
-        $data = $request->all();
+        $data = $this->validation($request->all(), $work->id);
         $work->update($data);
         return redirect()->route('admin.works.show', $work);
     }
@@ -92,4 +121,6 @@ class WorkController extends Controller
         $work->delete();
         return redirect()->route('admin.works.index');
     }
+
+   
 }

@@ -4,6 +4,15 @@
 @section('content')
 <div class="container mt-5">
 
+  @if ($errors->any())
+  <div class="alert alert-danger" role="alert">
+    Correggi i seguenti errori per proseguire:
+    @foreach ($errors->all() as $error)
+    <p>{{ $error }}</p>
+    @endforeach
+  </div>
+  @endif
+
 
   <form action="{{ route('admin.works.update', $work) }}" method="POST">
     @method('PUT') @csrf
